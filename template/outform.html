@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+    {%for d in display %}
+    <tr>
+        <!-- <td scope="row">{{st.Title}}</td> -->
+        <td>{{d.task}}</td>
+        <td>{{d.task_description}}</td>
+        <td>{{d.num}}</td>
+        <td>{{d.status}}</td>
+        <td>{{d.start_date_time}}</td>
+        <td>{{d.end_date_time}}</td>
+        <!-- <td><a href="{% url 'deletetask' d.id %} " ><button type="submit">delete</button></a></td> -->
+        
+        <td><form action="{% url 'deletetask' d.id %}" method="POST">{% csrf_token %}<input type="submit" value="Delete"></form></td>
+        <!-- <td>{{d.status}}</td> -->
+        <td><form action="{% url 'update' d.id %}" method="GET">{% csrf_token %}<input type="submit" value="Update"></form></td>
+    </tr>
+    {%endfor%}
+    </table>
+    <a href="{% url 'add' %}" >add</a>
+</body>
+</html>

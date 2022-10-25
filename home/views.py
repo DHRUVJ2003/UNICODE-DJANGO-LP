@@ -14,20 +14,18 @@ def form(request):
         context={'form':form}
         return render(request,'inform.html',context)
     if request.method=="POST":
-        rm=USE(request.POST)
-        if rm.is_valid():
-            name=rm.cleaned_data['username']
-            if(USER.objects.filter(username=name).exists()==True):
-                display= TD.objects.filter(user_id=(USER.objects.get(username=name)).username).values
-                print (display)
+        rm=request.POST.get('username')
+        if(USER.objects.filter(username=rm).exists()==True):
+            display= TD.objects.filter(user_id=(USER.objects.get(username=rm)).username).values()
+            # print (display)
                 # display= TD.objects.filter(user_id=name).values()
-                ans={'display':{display}}
-                return render(request,'inform.html',ans)
-            else:
-                rm=USER(username=name) 
-                rm.save()
-                ans={'display':{}}
-                return render(request,'inform.html',ans)
+            ans={'display':display}
+            return render(request,'outform.html',ans)
+        else:
+            rm=USER(username=rm) 
+            rm.save()
+            ans={'display':{}}
+            return render(request,'outform.html',ans)
 
 def add(request):
     if request.method=="GET":
@@ -48,4 +46,36 @@ def add(request):
         td.save()
         display= TD.objects.filter(user_id=user_id).order_by('start_date_time').values()
         ans={'display':display}
-        return render(request,'inform.html',ans)
+        return render(request,'outform.html',ans)
+
+def deletet(request,id):
+    if request.method == 'POST':
+        p=TD.objects.filter(id=id)
+        p.delete()
+        return HttpResponseRedirect('/')
+        # return HttpResponseRedirect(request. META. get('HTTP_REFERER', '/'))
+        # print (p)
+
+def deleteu(request):
+    if request.method == 'GET':
+        p=USE()
+        context={'p':p}
+        return render(request,'userdel.html',context)
+    if request.method == 'POST':
+        w=request.POST.get('username')
+        p=USER.objects.filter(username=w)
+        # print(p)
+        p.delete()
+        return redirect('form')
+
+def update(request,id):
+    if request.method=='GET':
+        pi=TD.objects.get(id=id)
+        fm=T(instance=pi)
+        return render(request,'update.html',{'form':fm})
+    else:
+        pi=TD.objects.get(id=id)
+        fm=T(request.POST,instance=pi)
+        if fm.is_valid:
+            fm.save()
+        return HttpResponseRedirect('/')
