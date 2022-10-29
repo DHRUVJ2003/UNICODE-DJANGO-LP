@@ -9,7 +9,7 @@ from django.forms import CharField, ModelForm
 from .form import T,signin
 from .models import USER,TD
 import requests
-from django.contrib.auth import authenticate ,login as loginUser
+from django.contrib.auth import authenticate ,login as loginUser,logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.contrib.auth.decorators import login_required
 # def form(request):
@@ -68,8 +68,8 @@ def signup(request):
         context={'signform':signform}
         return render (request,'sign.html',context)
     else:
-        signform=signin(request.POST)
-        if signform.is_valid:            
+        signform=signin(request.POST,request.FILES)
+        if signform.is_valid==True:            
             # password=signform.cleaned_data.get('password')
             # user.set_password(password)
             user=signform.save()
@@ -147,3 +147,7 @@ def profile(request):
         print(username)
         display = USER.objects.get(username=username)
         return render(request , 'profile.html' , context={'display' : display})
+
+def logt(request):
+    logout(request)
+    return redirect('login')
