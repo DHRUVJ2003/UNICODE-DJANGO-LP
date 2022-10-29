@@ -7,6 +7,7 @@
     <title>Document</title>
 </head>
 <body>
+    <img  src="{{display.profile_pic.url}}" >
     <table>
     {%for d in display %}
     <tr>
@@ -26,5 +27,7 @@
     {%endfor%}
     </table>
     <a href="{% url 'add' %}" >add</a>
+    <a href="{% url 'login' %}" >logout</a>
+    <a href="{% url 'profile' %}" >profile</a>
 </body>
 </html>
