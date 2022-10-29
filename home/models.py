@@ -16,6 +16,10 @@ class USER(AbstractUser):
     email=models.EmailField(max_length=254)
     gender=models.CharField(max_length=1,choices=gender_choices)
     profile_pic=models.ImageField(upload_to='images/',default='images/xyz.jpg')
+    
+    def __str__(self):
+        return self.username
+    
     # objects=USERmanager()
     # REQUIRED_FIELDS=[]
 
@@ -29,6 +33,8 @@ class TD(models.Model):
     start_date_time=models.DateTimeField()
     end_date_time=models.DateTimeField()
 
+    def __str__(self):
+       return self.task 
 
 
 
