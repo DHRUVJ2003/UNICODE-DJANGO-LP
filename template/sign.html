@@ -12,5 +12,10 @@
         {{ signform }}
         <input type="submit" value="submit">
     </form>
+    <div>
+        {% for x in messages%}
+        {{x}}
+        {%endfor%}
+    </div>
 </body>
 </html>

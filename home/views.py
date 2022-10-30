@@ -12,6 +12,7 @@ import requests
 from django.contrib.auth import authenticate ,login as loginUser,logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 # def form(request):
 #     if request.method=="GET":
 #         form=USE()
@@ -57,6 +58,7 @@ def login(request):
                 loginUser(request , user)
                 return redirect('main')
         else:
+            messages.error(request,'login failed')
             context = {
                 'form' : form
             }
@@ -69,13 +71,16 @@ def signup(request):
         return render (request,'sign.html',context)
     else:
         signform=signin(request.POST,request.FILES)
-        if signform.is_valid==True:            
+        if signform.is_valid(): 
             # password=signform.cleaned_data.get('password')
             # user.set_password(password)
             user=signform.save()
             authenticate(username=user.username,password=user.password)
+            messages.success(request,'you have been registered successfully')
             return redirect('login')
         else:
+            print ("dhruv")           
+            messages.error(request,'signup failed')
             return redirect('signup')
 
 
