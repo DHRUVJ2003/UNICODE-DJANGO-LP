@@ -12,6 +12,7 @@ import requests
 from django.contrib.auth import authenticate ,login as loginUser,logout
 from django.contrib.auth.forms import  AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from .decorators import authentication_not_required
 from django.contrib import messages
 # def form(request):
 #     if request.method=="GET":
@@ -39,7 +40,7 @@ def main(request):
         display = TD.objects.filter(user = user).order_by('start_date_time')
         return render(request , 'outform.html' , context={'display' : display})
 
-
+@authentication_not_required
 def login(request):
     if request.method == 'GET':
         form = AuthenticationForm()
@@ -64,6 +65,7 @@ def login(request):
             }
             return render(request , 'login.html' , context=context )
 
+@authentication_not_required
 def signup(request):
     if request.method=='GET':
         signform=signin()
